@@ -11,9 +11,8 @@ const fakeAsyncGetSession = async (formData: any): Promise<Session> => {
       if (formData.get('password') === 'password') {
         resolve({
           user: {
-            name: 'Bharat Kashyap',
+            name: 'Gubu Admin',
             email: formData.get('email') || '',
-            image: 'https://avatars.githubusercontent.com/u/19550456',
           },
         });
       }

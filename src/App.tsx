@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import { AppProvider } from '@toolpad/core/react-router-dom';
 import { Outlet, useNavigate } from 'react-router-dom';
 import type { Navigation, Session } from '@toolpad/core';
@@ -12,19 +12,27 @@ const NAVIGATION: Navigation = [
     icon: <DashboardIcon />,
   },
   {
-    segment: 'orders',
-    title: 'Orders',
-    icon: <ShoppingCartIcon />,
+    segment: 'products',
+    title: 'Products',
+    icon: <InventoryIcon />,
   },
 ];
 
 const BRANDING = {
-  title: 'Gubu Accounting App',
-  logo: <img src={"assets/buffer-placeholder.svg"} alt={"logo"}></img>
+  title: `Gubu Accounting App`,
 };
 
 export default function App() {
-  const [session, setSession] = React.useState<Session | null>(null);
+
+  const DUMMY_SESSION: Session = {
+    user: {
+      name: 'Gubu Admin',
+      email: 'some email',
+    }
+  };
+
+
+  const [session, setSession] = React.useState<Session | null>(DUMMY_SESSION);
   const navigate = useNavigate();
 
   const signIn = React.useCallback(() => {
@@ -36,7 +44,9 @@ export default function App() {
     navigate('/sign-in');
   }, [navigate]);
 
-  const sessionContextValue = React.useMemo(() => ({ session, setSession }), [session, setSession]);
+  const sessionContextValue = React.useMemo(
+      () => ({ session, setSession }), [session, setSession]
+  );
 
   return (
     <SessionContext.Provider value={sessionContextValue}>

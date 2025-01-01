@@ -4,8 +4,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import Layout from './layouts/dashboard';
 import DashboardPage from './pages';
-import OrdersPage from './pages/orders';
+import ProductsPage from './pages/products';
 import SignInPage from './pages/signIn';
+import axios from 'axios';
+
+//Set axios base url
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const router = createBrowserRouter([
   {
@@ -20,8 +24,8 @@ const router = createBrowserRouter([
             Component: DashboardPage,
           },
           {
-            path: '/orders',
-            Component: OrdersPage,
+            path: '/products',
+            Component: ProductsPage,
           },
         ],
       },

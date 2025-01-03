@@ -1,3 +1,5 @@
 import axios from 'axios';
 
-export const getProducts = axios.get('/products');
+const baseUrl = import.meta.env.VITE_API_URL;
+
+export const getProducts = axios.get(`${baseUrl}/products`);

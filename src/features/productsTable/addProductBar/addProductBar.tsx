@@ -1,17 +1,26 @@
-import { GridSlotProps, GridToolbarContainer } from "@mui/x-data-grid";
+import {
+    GridRowModes,
+    GridSlotProps,
+    GridToolbarContainer
+} from "@mui/x-data-grid";
 import { Button } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import * as React from "react";
 
-export default function AddProductBar(props: GridSlotProps) {
+export default function AddProductBar(props: GridSlotProps['toolbar']) {
+    const { setRows, setRowModesModel } = props;
+
     const handleClick = () => {
-        setRows((oldRows: Product[]) => {
-            const id = oldRows.length + 1;
-            return [
-                ...oldRows,
-                { id, name: '' }
-            ]
-        })
-    }
+        setRows((rows) => [
+            ...rows,
+            { id: rows.length, name: '', isNew: true }
+        ]);
+
+        setRowModesModel((model) => ({
+            ...model,
+            [Object.keys(model).length + 1]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+        }));
+    };
 
     return (
         <GridToolbarContainer>

@@ -8,9 +8,6 @@ import ProductsPage from './pages/products';
 import SignInPage from './pages/signIn';
 import axios from 'axios';
 
-//Set axios base url
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
-
 const router = createBrowserRouter([
   {
     Component: App,

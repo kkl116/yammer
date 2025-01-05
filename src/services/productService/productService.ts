@@ -10,6 +10,11 @@ export const addProduct=
 }
 
 export const updateProduct =
-    (productId: number, payload: UpdateProductRequestDto): Promise<AxiosResponse<any, any>> => {
-    return bufferClient.put(`/product/${productId}`, payload);
+    (id: number, payload: UpdateProductRequestDto): Promise<AxiosResponse<any, any>> => {
+    return bufferClient.put(`/product/${id}`, payload);
+}
+
+export const deleteProduct =
+    (id: number): Promise<AxiosResponse<any, any>> => {
+    return bufferClient.delete(`/product/${id}`)
 }

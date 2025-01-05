@@ -19,8 +19,8 @@ import {
 import AddProductBar from "./addProductBar/addProductBar";
 import { useFetchProducts } from "./productTable.hooks";
 import {rowToAddProductRequest, rowToUpdateProductRequest} from "./productTable.transformer";
-import { addProduct, updateProduct } from "../../services/productService/productService";
-import {AxiosResponse} from "axios";
+import { addProduct, updateProduct, deleteProduct } from "../../services/productService/productService";
+import { AxiosResponse } from "axios";
 
 declare module '@mui/x-data-grid' {
     interface ToolbarPropsOverrides {
@@ -51,8 +51,18 @@ export default function ProductTable() {
     };
 
     const handleDeleteClick = (id: GridRowId) => () => {
-        //use gridApiRef to delete the row
-        setRows(rows.filter((row) => row.id !== id));
+        const rowToDelete = rows.filter((row) => row.id == id);
+        if (rowToDelete.length) {
+            deleteProduct(rowToDelete[0].productId)
+                .then((response) => {
+                    console.log('row deleted');
+                    //remove row from table.
+                    setRows(rows.filter((row) => row.id !== id));
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
     };
 
     const handleCancelClick = (id: GridRowId) => () => {
@@ -70,8 +80,6 @@ export default function ProductTable() {
     const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
         //we should do save and update row here because we have access to the newRow values
         //check if the productId field is populated - if it's not it's a save operation
-        console.log(newRow);
-
         let request: Promise<AxiosResponse<any, any>> = newRow.productId
             ? updateProduct(newRow.productId, rowToUpdateProductRequest(newRow))
             : addProduct(rowToAddProductRequest(newRow))

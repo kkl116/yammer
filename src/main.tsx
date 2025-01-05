@@ -6,7 +6,6 @@ import Layout from './layouts/dashboard';
 import DashboardPage from './pages';
 import ProductsPage from './pages/products';
 import SignInPage from './pages/signIn';
-import axios from 'axios';
 
 const router = createBrowserRouter([
   {

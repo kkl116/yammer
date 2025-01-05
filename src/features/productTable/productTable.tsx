@@ -9,6 +9,7 @@ import {
     GridRowModes,
     DataGrid,
     GridColDef,
+    useGridApiRef,
     GridActionsCellItem,
     GridEventListener,
     GridRowId,
@@ -16,7 +17,10 @@ import {
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
 import AddProductBar from "./addProductBar/addProductBar";
-import {useFetchProducts} from "./productTable.hooks";
+import { useFetchProducts } from "./productTable.hooks";
+import {rowToAddProductRequest, rowToUpdateProductRequest} from "./productTable.transformer";
+import { addProduct, updateProduct } from "../../services/productService/productService";
+import {AxiosResponse} from "axios";
 
 declare module '@mui/x-data-grid' {
     interface ToolbarPropsOverrides {
@@ -25,11 +29,11 @@ declare module '@mui/x-data-grid' {
     }
 }
 
-export default function ProductsTable() {
+export default function ProductTable() {
     const [rows, setRows] = React.useState<GridRowsProp>([]);
     const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
 
-    //useEffect here to fetch products
+    //fetch products on init
     useFetchProducts(setRows);
 
     const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
@@ -43,12 +47,11 @@ export default function ProductsTable() {
     };
 
     const handleSaveClick = (id: GridRowId) => () => {
-        //actually save it to the db here
         setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     };
 
     const handleDeleteClick = (id: GridRowId) => () => {
-        //actually delete
+        //use gridApiRef to delete the row
         setRows(rows.filter((row) => row.id !== id));
     };
 
@@ -64,10 +67,30 @@ export default function ProductsTable() {
         }
     };
 
-    const processRowUpdate = (newRow: GridRowModel) => {
-        const updatedRow = { ...newRow, isNew: false };
-        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-        return updatedRow;
+    const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
+        //we should do save and update row here because we have access to the newRow values
+        //check if the productId field is populated - if it's not it's a save operation
+        console.log(newRow);
+
+        let request: Promise<AxiosResponse<any, any>> = newRow.productId
+            ? updateProduct(newRow.productId, rowToUpdateProductRequest(newRow))
+            : addProduct(rowToAddProductRequest(newRow))
+
+        return request
+            .then((response) => {
+                const updatedRow = {
+                    ...newRow,
+                    productId: newRow.productId ? newRow.productId : response.data.id,
+                    isNew: false
+                };
+
+                setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+                return updatedRow;
+            })
+            .catch((error) => {
+                console.log(error);
+                return oldRow;
+            })
     };
 
     const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
@@ -75,7 +98,8 @@ export default function ProductsTable() {
     };
 
     const columns: GridColDef[] = [
-        { field: 'name', headerName: 'Name', flex: 3, editable: true },
+        { field: 'productId', headerName: 'Product ID', flex: 1, editable: false},
+        { field: 'name', headerName: 'Name', flex: 5, editable: true },
         {
             field: 'actions',
             type: 'actions',

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import ProductsTable from "../features/productsTable/productsTable";
+import ProductTable from "../features/productTable/productTable";
 
 export default function ProductsPage() {
-  return <ProductsTable/>;
+  return <ProductTable/>;
 }

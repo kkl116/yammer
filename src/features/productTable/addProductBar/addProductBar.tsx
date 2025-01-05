@@ -13,12 +13,12 @@ export default function AddProductBar(props: GridSlotProps['toolbar']) {
     const handleClick = () => {
         setRows((rows) => [
             ...rows,
-            { id: rows.length, name: '', isNew: true }
+            { id: rows.length, name: '', productId: '', isNew: true }
         ]);
 
         setRowModesModel((model) => ({
             ...model,
-            [Object.keys(model).length + 1]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+            [Object.keys(model).length + 2]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
         }));
     };
 

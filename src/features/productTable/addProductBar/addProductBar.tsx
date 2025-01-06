@@ -11,6 +11,7 @@ export default function AddProductBar(props: GridSlotProps['toolbar']) {
     const { setRows, setRowModesModel } = props;
 
     const handleClick = () => {
+        //TODO: Fix auto focus row
         setRows((rows) => [
             ...rows,
             { id: rows.length, name: '', productId: '', isNew: true }
@@ -18,7 +19,7 @@ export default function AddProductBar(props: GridSlotProps['toolbar']) {
 
         setRowModesModel((model) => ({
             ...model,
-            [Object.keys(model).length + 2]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+            [Object.keys(model).length]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
         }));
     };
 

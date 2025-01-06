@@ -32,9 +32,10 @@ declare module '@mui/x-data-grid' {
 export default function ProductTable() {
     const [rows, setRows] = React.useState<GridRowsProp>([]);
     const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+    const gridApiRef = useGridApiRef();
 
     //fetch products on init
-    useFetchProducts(setRows);
+    useFetchProducts(setRows, setRowModesModel);
 
     const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
         if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -57,7 +58,7 @@ export default function ProductTable() {
                 .then((response) => {
                     console.log('row deleted');
                     //remove row from table.
-                    setRows(rows.filter((row) => row.id !== id));
+                    gridApiRef.current.updateRows([{ ...rowToDelete[0], _action: "delete"}]);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -92,7 +93,7 @@ export default function ProductTable() {
                     isNew: false
                 };
 
-                setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+                gridApiRef.current.updateRows([updatedRow])
                 return updatedRow;
             })
             .catch((error) => {
@@ -158,6 +159,7 @@ export default function ProductTable() {
 
     return (
         <DataGrid
+            apiRef={gridApiRef}
             rows={rows}
             columns={columns}
             editMode={"row"}

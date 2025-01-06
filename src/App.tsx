@@ -15,6 +15,7 @@ const NAVIGATION: Navigation = [
     segment: 'products',
     title: 'Products',
     icon: <InventoryIcon />,
+    pattern: 'products/:productId'
   },
 ];
 

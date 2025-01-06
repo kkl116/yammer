@@ -6,6 +6,7 @@ import Layout from './layouts/dashboard';
 import DashboardPage from './pages';
 import ProductsPage from './pages/products';
 import SignInPage from './pages/signIn';
+import ProductDetailsPage from "./pages/productDetails";
 
 const router = createBrowserRouter([
   {
@@ -17,17 +18,21 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/',
-            Component: DashboardPage,
+            Component: DashboardPage
           },
           {
             path: '/products',
-            Component: ProductsPage,
+            Component: ProductsPage
           },
+          {
+            path: '/products/:productId',
+            Component: ProductDetailsPage
+          }
         ],
       },
       {
         path: '/sign-in',
-        Component: SignInPage,
+        Component: SignInPage
       },
     ],
   },

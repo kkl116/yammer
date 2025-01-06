@@ -15,12 +15,16 @@ import {
     GridRowId,
     GridRowModel,
     GridRowEditStopReasons,
+    GridRowParams,
+    MuiEvent,
+    GridCallbackDetails,
 } from '@mui/x-data-grid';
 import AddProductBar from "./addProductBar/addProductBar";
 import { useFetchProducts } from "./productTable.hooks";
-import {rowToAddProductRequest, rowToUpdateProductRequest} from "./productTable.transformer";
+import { rowToAddProductRequest, rowToUpdateProductRequest } from "./productTable.transformer";
 import { addProduct, updateProduct, deleteProduct } from "../../services/productService/productService";
 import { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
 
 declare module '@mui/x-data-grid' {
     interface ToolbarPropsOverrides {
@@ -33,6 +37,7 @@ export default function ProductTable() {
     const [rows, setRows] = React.useState<GridRowsProp>([]);
     const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
     const gridApiRef = useGridApiRef();
+    const navigate = useNavigate();
 
     //fetch products on init
     useFetchProducts(setRows, setRowModesModel);
@@ -42,6 +47,17 @@ export default function ProductTable() {
             event.defaultMuiPrevented = true;
         }
     };
+
+    const handleRowDoubleClick = (
+        params: GridRowParams,
+        event: MuiEvent,
+        details: GridCallbackDetails
+    )=> {
+        //override the default behaviour to go to edit mode.
+        setRowModesModel({ ...rowModesModel, [params.row.id]: { mode: GridRowModes.View } });
+        //navigate to product details page
+        navigate(`/products/${params.row.productId}`)
+    }
 
     const handleEditClick = (id: GridRowId) => () => {
         setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
@@ -166,6 +182,7 @@ export default function ProductTable() {
             rowModesModel={rowModesModel}
             onRowModesModelChange={handleRowModesModelChange}
             onRowEditStop={handleRowEditStop}
+            onRowDoubleClick={handleRowDoubleClick}
             processRowUpdate={processRowUpdate}
             slots={{ toolbar: AddProductBar }}
             slotProps={{

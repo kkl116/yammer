@@ -2,5 +2,5 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 
 export default function DashboardPage() {
-  return <Typography>Hello there :D</Typography>;
+  return <Typography>Welcome to Gubu Accounting :)</Typography>;
 }

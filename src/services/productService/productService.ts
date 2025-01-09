@@ -4,6 +4,10 @@ import { AddProductRequestDto, UpdateProductRequestDto } from "./productServiceD
 
 export const getProducts = bufferClient.get('/products');
 
+export const getProductById = (id: number) => {
+    return bufferClient.get(`/product/${id}`)
+}
+
 export const addProduct=
     (payload: AddProductRequestDto): Promise<AxiosResponse<any, any>> => {
     return bufferClient.post('/product', payload);

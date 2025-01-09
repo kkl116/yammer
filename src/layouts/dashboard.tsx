@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Outlet, Navigate, useLocation, useParams } from 'react-router-dom';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import {Breadcrumb, PageContainer} from '@toolpad/core/PageContainer';
+import { PageContainer } from '@toolpad/core/PageContainer';
 import { useSession } from '../SessionContext';
 import { useActivePage } from "@toolpad/core";
-import {useFetchProductName} from "./dashboard.hooks";
+import { useFetchProductName } from "./dashboard.hooks";
 
 export default function Layout() {
   const { session } = useSession();

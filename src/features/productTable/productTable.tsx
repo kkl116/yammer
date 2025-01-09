@@ -97,6 +97,8 @@ export default function ProductTable() {
     const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
         //we should do save and update row here because we have access to the newRow values
         //check if the productId field is populated - if it's not it's a save operation
+        console.log(newRow.productId)
+
         let request: Promise<AxiosResponse<any, any>> = newRow.productId
             ? updateProduct(newRow.productId, rowToUpdateProductRequest(newRow))
             : addProduct(rowToAddProductRequest(newRow))

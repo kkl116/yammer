@@ -11,12 +11,12 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.3.0",
-    "@mui/material": "^6.3.0",
+    "@mui/material": "^6.3.1",
     "@mui/x-data-grid": "^7.23.5",
     "@toolpad/core": "latest",
     "axios": "^1.7.9",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0",
     "react-router-dom": "^7.1.1"
   },
   "devDependencies": {
@@ -28,5 +28,9 @@
     "eslint-config-airbnb-typescript": "^18.0.0",
     "typescript": "^5.7.2",
     "vite": "^6.0.6"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
   }
 }
